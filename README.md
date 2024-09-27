@@ -1,4 +1,4 @@
-# FRTC code Workspace v5 for [Astra-Box](https://github.com/temper8/Astra-Box)
+# FRTC code Workspace v6 for [Astra-Box](https://github.com/temper8/Astra-Box)
 
 [Documentation](https://temper8.github.io/FRTC_DOC/)
 
