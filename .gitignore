@@ -1,6 +1,7 @@
 .vs/
 .vscode/
 doc/html/
+doc/.obsidian
 tmp/
 *.dir
 *.bak
