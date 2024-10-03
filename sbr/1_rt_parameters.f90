@@ -106,6 +106,9 @@ module rt_parameters
     integer ::   spectrum_type
     !! spectrum type 1 - 1D, 2 = 2D, 3, scatter
 
+    logical  :: upl_fix
+    real(wp) :: upl_value
+
     contains      
     subroutine show_parameters()          
       print*, "Freq = ", freq          
@@ -115,11 +118,14 @@ module rt_parameters
       print*, "zi2 = ",  zi2     
       print*, "dni2 = ", dni2     
 
-      print*, "---------- grill parameters and input LH spectrum "
+      print*, "------- grill parameters and input LH spectrum "
       print*, "zplus = ",  zplus     
       print*, "zminus = ", zminus     
       print*, "ntet = ",  ntet     
-      print*, "nnz = ", nnz           
+      print*, "nnz = ", nnz      
+      print*, "---------- options --------------"
+      print*, "upl_fix = ", upl_fix
+      print*, "upl_value = ", upl_value 
     end subroutine show_parameters
     
     subroutine read_nml_parameters(file_path)
@@ -144,7 +150,8 @@ module rt_parameters
         cright, cdel, rbord, pchm, pabs, pgiter, ni1, ni2, &
         niterat, nmaxm_1, nmaxm_2, nmaxm_3, nmaxm_4, &
         maxstep2, maxstep4
-        namelist /options/ ipri, iw, ismth, ismthalf, ismthout, inew, itor, ipol
+        namelist /options/ ipri, iw, ismth, ismthalf, ismthout, inew, itor, ipol, &
+            upl_fix, upl_value
         namelist /grill_parameters/ Zplus, Zminus, ntet, nnz
         namelist /spectrum/ spectrum_type
         ! Namelist definition===============================
