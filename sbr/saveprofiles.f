@@ -9,7 +9,9 @@
       logical, save :: first_time = .TRUE.
 
       if (first_time) then
-            call read_parameters('lhcd/ray_tracing.dat')
+            !call read_parameters('lhcd/ray_tracing.dat')
+            call read_nml_parameters('lhcd/parameters.nml')
+            
       end if
 
       call init_plasma(NA1,ABC,BTOR,RTOR,UPDWN,GP2,

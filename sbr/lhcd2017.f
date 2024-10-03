@@ -51,7 +51,10 @@
             return
       end if
 
-      call read_parameters('lhcd/ray_tracing.dat')
+      !call read_parameters('lhcd/ray_tracing.dat')
+      call read_nml_parameters('lhcd/parameters.nml')
+      call show_parameters()
+      !pause
       call init_plasma(NA1,ABC,BTOR,RTOR,UPDWN,GP2,
      & AMETR,RHO,SHIF,ELON,TRIA,MU,NE,TE,TI,ZEF,UPL)
 

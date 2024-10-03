@@ -1,4 +1,5 @@
 module rt_parameters
+    use, intrinsic :: iso_fortran_env, only: stderr => error_unit
     use kind_module
     implicit none
 !   physical parameters 
@@ -121,6 +122,95 @@ module rt_parameters
       print*, "nnz = ", nnz           
     end subroutine show_parameters
     
+    subroutine read_nml_parameters(file_path)
+        !! Read some parmeters,  Here we use a namelist 
+        !! but if you were to change the storage format (TOML,or home-made), 
+        !! this signature would not change
+
+        character(len=*),  intent(in)  :: file_path
+        !integer, intent(out) :: type_
+        integer                        :: file_unit, iostat
+
+        real(wp) ::  pabs
+        !! pabs,     part of remaining power interp. as absorption
+        integer ::  ipol
+        integer ::   nmaxm_1, nmaxm_2, nmaxm_3, nmaxm_4
+
+        ! Namelist definition===============================
+        namelist /physical_parameters/ freq, xmi1, zi1, xmi2, zi2, dni2, xmi3, zi3, dni3
+        namelist /parameters_for_alphas_calculations/ itend0, energy, factor, dra, kv
+        namelist /numerical_parameters/ &
+        nr, hmin1, rrange, eps, hdrob, cleft, &
+        cright, cdel, rbord, pchm, pabs, pgiter, ni1, ni2, &
+        niterat, nmaxm_1, nmaxm_2, nmaxm_3, nmaxm_4, &
+        maxstep2, maxstep4
+        namelist /options/ ipri, iw, ismth, ismthalf, ismthout, inew, itor, ipol
+        namelist /grill_parameters/ Zplus, Zminus, ntet, nnz
+        namelist /spectrum/ spectrum_type
+        ! Namelist definition===============================
+
+        call open_inputfile(file_path, file_unit, iostat)
+        if (iostat /= 0) then
+            print *, 'error open file'
+            !! write here what to do if opening failed"
+            return
+        end if
+
+        read (nml=physical_parameters, iostat=iostat, unit=file_unit)
+        read (nml=parameters_for_alphas_calculations, iostat=iostat, unit=file_unit)
+        read (nml=numerical_parameters, iostat=iostat, unit=file_unit)
+        read (nml=options, iostat=iostat, unit=file_unit)
+        read (nml=grill_parameters, iostat=iostat, unit=file_unit)
+        read (nml=spectrum, iostat=iostat, unit=file_unit)
+
+        pabs0 = pabs
+        eps_const = eps
+        i_pol = ipol
+        nmaxm(:) = (/nmaxm_1, nmaxm_2, nmaxm_3, nmaxm_4/)
+
+        call close_inputfile(file_path, file_unit, iostat)
+        if (iostat /= 0) then
+            print *, 'error close file'
+            !! write here what to do if reading failed"
+            return
+        end if
+    end subroutine read_nml_parameters
+
+    !! Namelist helpers
+
+    subroutine open_inputfile(file_path, file_unit, iostat)
+        !! Check whether file exists, with consitent error message
+        !! return the file unit
+        character(len=*),  intent(in)  :: file_path
+        integer,  intent(out) :: file_unit, iostat
+
+        inquire (file=file_path, iostat=iostat)
+        if (iostat /= 0) then
+            write (stderr, '(3a)') 'Error: file "', trim(file_path), '" not found!'
+        end if
+        open (action='read', file=file_path, iostat=iostat, newunit=file_unit)
+    end subroutine open_inputfile
+
+    subroutine close_inputfile(file_path, file_unit, iostat)
+        !! Check the reading was OK
+        !! return error line IF not
+        !! close the unit
+        character(len=*),  intent(in)  :: file_path
+        character(len=1000) :: line
+        integer,  intent(in) :: file_unit, iostat
+
+        if (iostat /= 0) then
+            write (stderr, '(2a)') 'Error reading file :"', trim(file_path)
+            write (stderr, '(a, i0)') 'iostat was:"', iostat
+            backspace(file_unit)
+            read(file_unit,fmt='(A)') line
+            write(stderr,'(A)') &
+                'Invalid line : '//trim(line)
+        end if
+        close (file_unit)   
+    end subroutine close_inputfile
+
+
     subroutine read_parameters(file_name)
         implicit none
         integer, parameter :: iunit = 20
