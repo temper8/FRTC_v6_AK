@@ -107,8 +107,14 @@ module rt_parameters
     !! spectrum type 1 - 1D, 2 = 2D, 3, scatter
 
     logical  :: upl_fix
+    !! floag for fixing upl value
     real(wp) :: upl_value
+    !! used upl value 
 
+    integer  :: fp_solver
+    !! fp solfer 
+    !! 0 default savelyev solver
+    !! 1 next solver
     contains      
     subroutine show_parameters()          
       print*, "Freq = ", freq          
@@ -126,6 +132,8 @@ module rt_parameters
       print*, "---------- options --------------"
       print*, "upl_fix = ", upl_fix
       print*, "upl_value = ", upl_value 
+      print*, "fp_solver = ", fp_solver 
+      
     end subroutine show_parameters
     
     subroutine read_nml_parameters(file_path)
@@ -151,7 +159,8 @@ module rt_parameters
         niterat, nmaxm_1, nmaxm_2, nmaxm_3, nmaxm_4, &
         maxstep2, maxstep4
         namelist /options/ ipri, iw, ismth, ismthalf, ismthout, inew, itor, ipol, &
-            upl_fix, upl_value
+            upl_fix, upl_value, &
+            fp_solver
         namelist /grill_parameters/ Zplus, Zminus, ntet, nnz
         namelist /spectrum/ spectrum_type
         ! Namelist definition===============================

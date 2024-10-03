@@ -140,6 +140,7 @@ module FokkerPlanck1D_mod ! the module name defines the namespace
 
     subroutine FokkerPlanck1D_solve_time_step(this, dt, nt)
         use lock_module
+        use rt_parameters, only: fp_solver
         implicit none
         class(FokkerPlanck1D), intent(inout) :: this
         
@@ -177,8 +178,18 @@ module FokkerPlanck1D_mod ! the module name defines the namespace
         yend = this%f(this%i0) !zero
         !print *, ' yend =', yend 
         !!!!!!!!!!!!   solve problem   !!!!!!!!!!!!!!!!!!!!!!!!!!
-        !call savelyev_solver(this%alfa2, nt, this%h, dt, this%n, ybeg, yend, this%d1, this%d2, this%d3, y)
-        call chang_cooper_solver(this%alfa2, nt, this%h, dt, this%n, ybeg, yend, this%d1,this%d2,this%d3, y)
+        select case (fp_solver)
+        case (0)
+            call savelyev_solver(this%alfa2, nt, this%h, dt, this%n, ybeg, yend, this%d1, this%d2, this%d3, y)
+        case (1)
+            call chang_cooper_solver(this%alfa2, nt, this%h, dt, this%n, ybeg, yend, this%d1,this%d2,this%d3, y)
+        case DEFAULT
+            print *, 'bad solver'
+            stop
+        end select   
+        !
+
+
         allocate(fj(this%n+2))
         fj(1)=ybeg
         fj(this%n+2)=yend
