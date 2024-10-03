@@ -336,6 +336,12 @@ contains
             allocate(ynzm(nnz),pm(nnz))
             allocate(ynzm0(ispl),pm0(ispl))
             allocate(yn2z(ispl),powinp(ispl))
+            if (spectr%size<nnz) then
+                print *, 'Спектр слишком меленький для аппроксимации'
+                print *, 'spectr size < nnz. '
+                print *, spectr%size, nnz
+                stop
+            endif
             do i = 1, spectr%size
                 ynzm0(i) = spectr%data(i)%Ntor
                 pm0(i) = spectr%data(i)%power
