@@ -45,7 +45,7 @@ subroutine view(tview, ispectr,nnz,ntet) !sav2008
     use plasma
     use decrements, only: pdec1,pdec2,pdec3,pdecv,pdecal,dfdv
     use decrements, only: zatukh
-    use rt_parameters, only :  nr, itend0, kv, nmaxm    
+    use rt_parameters, only :  nr, itend0, kv, nmaxm, traj_len_seved
     use iterator_mod, only : dflf, dfrt, distr
     use driver_module !, only: jrad, iww, izz, length
     use trajectory_data
@@ -65,6 +65,7 @@ subroutine view(tview, ispectr,nnz,ntet) !sav2008
     integer i, n, itr, ntraj
     integer jrc,nturn,ib,ie,jr,ifast,idir,iv
     integer jznak,jdlt,mn,mm,jchek,itet,inz
+    integer traj_size
     integer, parameter :: unit_bias = 10
     integer, parameter :: m=7
     real(wp), parameter :: pleft=1.d-10 !m may be chaged together with name(m)
@@ -98,6 +99,9 @@ subroutine view(tview, ispectr,nnz,ntet) !sav2008
     write(fname,'(A, f9.7,".dat")') folder, tview
     print *, fname
 
+    if (traj_len_seved == 0) then
+        return
+    endif
 
 
     htet=zero
@@ -130,7 +134,12 @@ subroutine view(tview, ispectr,nnz,ntet) !sav2008
         if(traj%mbad.eq.0) then 
             ntraj=ntraj+1
             write(1,3) !write header 
-            do i=1, traj%size
+            if (traj_len_seved< 0) then
+                traj_size= traj%size
+            else
+                traj_size= traj_len_seved
+            endif
+            do i=1, traj_size
                 tp = traj%points(i)
                 v  = tp%vel
                 jr = tp%jrad
