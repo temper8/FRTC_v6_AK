@@ -115,6 +115,12 @@ module rt_parameters
     !! fp solfer 
     !! 0 default savelyev solver
     !! 1 next solver
+    integer :: traj_len_seved
+    !! traj length seved
+    !! - 1 save all
+    !! 0 don't save
+    !! >1 length seved
+    
     contains      
     subroutine show_parameters()          
       print*, "Freq = ", freq          
@@ -160,7 +166,7 @@ module rt_parameters
         maxstep2, maxstep4
         namelist /options/ ipri, iw, ismth, ismthalf, ismthout, inew, itor, ipol, &
             upl_fix, upl_value, &
-            fp_solver
+            fp_solver, traj_len_seved
         namelist /grill_parameters/ Zplus, Zminus, ntet, nnz
         namelist /spectrum/ spectrum_type
         ! Namelist definition===============================
