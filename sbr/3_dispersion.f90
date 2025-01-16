@@ -305,7 +305,7 @@ contains
         use metrics
         use dielectric_tensor
         use dispersion_equation, only : as, bs, yny, ynz, ynzq
-        use iterator_mod
+        use small_vgrid, only: distr
         use source_new_mod, only: source_new
         implicit none
         real(wp), intent(in) :: pa, yn2, ptet, yn3, ynpopq, xnr
@@ -326,7 +326,7 @@ contains
         cf4=xnr
         cf5=yn2
         vz=cltn/dabs(ynz)
-        if(vz.gt.cltn) vz=cltn !sav2010
+        !if(vz.gt.cltn) vz=cltn !sav2010
         vt=fvt(pa)
         !jr=jfoundr
         icf1=iw
@@ -458,7 +458,7 @@ contains
 
 
     subroutine disp2_ivar3(pa,yn2,ptet,xnro)
-        ! case iroot == 1 ivar= 0 or 3
+        ! case iroot == 1 ivar= 3
         use constants, only: zero, one, two
         use rt_parameters, only: iw
         use metrics
@@ -494,10 +494,10 @@ contains
         
         if(dls.lt.zero) then
             ! conversion
-            print *, 'conv'
-            pause
+            print *, 'conversion'
+            !pause
             iconv=1
-            if (ivar.ne.0) ivar=-1
+            ivar=-1
             return
         end if
 300     continue
@@ -521,13 +521,17 @@ contains
         if (dll.lt.zero) then
         !  70 reflection 
             irefl=1
-            if (ivar.gt.1.and.ivar.ne.10) then
-                iw=-iw
-                ivar=10
-                goto 300
+            if (ivar.eq.10) then 
+                ivar=-1
+                return
             end if
-            if (ivar.eq.10) ivar=-1
-            return
+            print *, 'reflection'
+            !pause
+            iw=-iw
+            ivar=10
+            goto 300
+            
+
         endif
 
 400     dl2=-dfloat(izn)*dsqrt(dll)/al

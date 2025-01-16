@@ -36,7 +36,7 @@ module rt_parameters
 
 !!!!!!!!!!!!! numerical parameters !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     integer  ::  nr     
-    !! nr,  radial grid number  <= 505
+    !! nr,  radial grid number  <= 505 (number of mag surface for FRTC)
     real(wp) ::  hmin1
     !! hmin1, rel.(hr) min. step in the Fast comp. mode, <1.d0
     real(wp) ::  rrange
@@ -105,12 +105,14 @@ module rt_parameters
 
     integer ::   spectrum_type
     !! spectrum type 1 - 1D, 2 = 2D, 3, scatter
-
+    logical ::   spectrum_PWM 
+    !! PWM approximaton on/off
+    integer ::   spectrum_coordinate_system
+    !! coordinate system of spectrum
     logical  :: upl_fix
     !! floag for fixing upl value
     real(wp) :: upl_value
     !! used upl value 
-
     integer  :: fp_solver
     !! fp solfer 
     !! 0 default savelyev solver
@@ -120,7 +122,11 @@ module rt_parameters
     !! - 1 save all
     !! 0 don't save
     !! >1 length seved
-    
+    integer :: max_number_of_traj
+    !! maximum number of trajectories
+    integer :: max_size_of_traj
+    !! maximum length of trajectories
+
     contains      
     subroutine show_parameters()          
       print*, "Freq = ", freq          
@@ -135,10 +141,19 @@ module rt_parameters
       print*, "zminus = ", zminus     
       print*, "ntet = ",  ntet     
       print*, "nnz = ", nnz      
+      
       print*, "---------- options --------------"
       print*, "upl_fix = ", upl_fix
       print*, "upl_value = ", upl_value 
       print*, "fp_solver = ", fp_solver 
+      print*, "max_number_of_traj = ", max_number_of_traj 
+      print*, "max_size_of_traj = ", max_size_of_traj       
+
+      print*, "---------- spectrum --------------"
+      print*, "spectrum_type = ", spectrum_type
+      print*, "spectrum_PWM = ", spectrum_PWM 
+      print*, "spectrum_coordinate_system = ", spectrum_coordinate_system       
+
       
     end subroutine show_parameters
     
@@ -166,9 +181,10 @@ module rt_parameters
         maxstep2, maxstep4
         namelist /options/ ipri, iw, ismth, ismthalf, ismthout, inew, itor, ipol, &
             upl_fix, upl_value, &
-            fp_solver, traj_len_seved
+            fp_solver, traj_len_seved, &
+            max_number_of_traj, max_size_of_traj
         namelist /grill_parameters/ Zplus, Zminus, ntet, nnz
-        namelist /spectrum/ spectrum_type
+        namelist /spectrum/ spectrum_type, spectrum_PWM, spectrum_coordinate_system 
         ! Namelist definition===============================
 
         call open_inputfile(file_path, file_unit, iostat)

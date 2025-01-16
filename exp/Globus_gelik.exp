@@ -1,15 +1,15 @@
- Globus-M 38689 LH 0.2MA 0.8.T
+ Globus-M 40167 LH 0.5MA 0.8.T
 
  Name   Time    Value      Error
 RTOR            0.375
 AB              0.25
-ABC             0.223
+ABC             0.23
 !AWALL           0.3
-ELONM           2                 !elong. of the chamber
+ELONM           2.                 !elong. of the chamber
 TRICH           0.4                 !trian. of the chamber
-ELONG           1.95                 !elong. of the LCMS
-TRIAN           0.48                 !trian. of the LCMS
-AMJ             2.                  !mass of main ions
+ELONG           1.8                 !elong. of the LCMS
+TRIAN           0.4                 !trian. of the LCMS
+AMJ             1.                  !mass of main ions
 ZMJ             1.                  !charge of main ions
 BTOR            0.8
 SHIFT           0.0 
@@ -127,22 +127,20 @@ POINTS   81    GRIDTYPE 1    NAMEXP TIX    NTIMES 1
    9.527E-02  9.337E-02  8.788E-02  8.281E-02  7.816E-02  7.394E-02  7.009E-02  6.649E-02  6.284E-02  5.800E-02
    2.000E-02
  
-
 !*************** Te **********************************
 NAMEXP TEX POINTS 8 GRIDTYPE 19 FACTOR 1
 0
-0.26        0.33       0.36        0.41        0.45        0.5        0.56      0.600
-0.109       0.328      0.438       0.720       0.483       0.216      0.228     0.034
-!0.109       0.288      0.392       0.646       0.479       0.258      0.221     0.034
+0.371      0.391      0.412      0.434     0.456     0.481    .505    0.53    0.55    .5605     0.600
+.542       .526       .527       .507      0.526     0.513    .351    .238    .143    .119       0.11 
+
 !!0.112       0.288      0.392       0.646       0.479       0.258      0.221      0.012
 !*************** ne **********************************
 NAMEXP NEX POINTS 8 GRIDTYPE 19 FACTOR 1
 0
-0.26        0.33       0.36         0.41        0.45        0.5       0.56	0.600
-0.76        0.93       1.48         2.5         1.72        0.96      0.8       0.11 
-!0.62        1.03       1.46         2.56        1.70        0.89      0.66      0.01
+0.371      0.391      0.412      0.434     0.456     0.481    .505    0.53    0.55    .5605     0.600
+1.41       1.39       1.40       1.41      1.39      1.35     1.19    .97     0.79     0.68      0.1 
+!0.62        1.03       1.46         2.56        1.70        0.89     0.66      0.01
 !
- 
    
 POINTS   2   GRIDTYPE 1   NAMEXP ZEFX   NTIMES 1
 .190  

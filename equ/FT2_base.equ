@@ -1,9 +1,9 @@
 
 !----------------- Times -----------------
 TSTART = 0.011d0;
-TEND = 0.05;
+TEND = 0.04;
 TINIT = 0.026d0;
-TPAUSE = 0.05d0;
+!TPAUSE = 0.03d0;
 TSCALE = 0.015d0;
 
 DROUT = 1.d-4;
@@ -13,7 +13,7 @@ DSTART = 0.026d0;
 
 CF1 = 0.1d-3;
 CF2 = 0.028d0;
-CF3 = 0.033d0;
+CF3 = 0.040d0;
 !----------------- Electrons parametrs -----------------
 CF14 = 1.5d0;
 
@@ -71,7 +71,7 @@ NEQUIL = 41;
 
 !----------------- LHCD & DrivenCurrent -----------------
 
-QLH = (0.054d0-1.d-3*FRAMP(CF2,CF3)-0.053*FJUMP(CF3))*FJUMP(CF2);
+QLH = 0.054d0;
 
 debug:0.0001:DSTART::;
 saveprofiles::CF2:CF3:;

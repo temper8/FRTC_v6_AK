@@ -1,22 +1,18 @@
-module iterator_mod
+module small_vgrid
     use kind_module   
+    use nr_grid, only: MAX_NR
     implicit none
     real(wp) :: vmid(100),vz1(100),vz2(100)
-    integer  :: ibeg(100),iend(100)
+    !integer  :: ibeg(100),iend(100)
 
     real(wp) :: vrj(101),dj(101),djnew(1001)
     real(wp) :: dj2(101),d2j(101)
 
-    real(wp) :: vgrid(101,100), dfundv(101,100)
+    real(wp) :: vgrid(101,MAX_NR), dfundv(101,MAX_NR)
     !!common/gridv/vgrid(101,100),dfundv(101,100)
     integer  :: nvpt
     !!common/gridv/nvpt
     integer :: ipt1, ipt2, ipt
-
-    real(wp) :: psum4
-    !!common /vvv2/ psum4
-    real(wp) :: plost,pnab
-    !!common /a0a4/ plost,pnab
 
     real(wp) :: vlf,vrt,dflf,dfrt
     !common /a0ghp/ vlf,vrt,dflf,dfrt
@@ -26,7 +22,6 @@ module iterator_mod
 contains
 
     subroutine distr(vz,j,ifound,fder)
-        !use iterator_mod
         use lock_module      
         implicit none
         integer, intent(in) :: j
@@ -59,9 +54,16 @@ contains
             pause'next key = stop'
             stop
         else if(ierr.eq.2) then !vz > vgrid(nvpt,j)
-            write(*,*)'exception: ierr=2 in distr()'
-            pause'next key = stop'
-            stop
+            !write(*,*)'exception: ierr=2 in distr()'
+            print *, 'vz > vgrid(nvpt,j)'
+            ifound=nvp
+            vlf=vzj(nvp)
+            vrt=vz
+            fder=0
+            dflf=0
+            dfrt=0
+            !pause'next key = stop'
+            !stop
         else if(ierr.eq.3) then
             write(*,*)'exception in distr, klo=khi=',klo,' j=',j,' nvp=',nvp
             write(*,*)'vz=',vz,' v1=',vzj(1),' v2=',vzj(nvp)
@@ -78,9 +80,6 @@ contains
         use rt_parameters, only: nr
         use plasma, only: fvt, vt0, cltn
         use maxwell, only: i0, vij, dfij, dij
-        !use iterator_mod, only: dfundv
-        !use iterator_mod, only: ipt
-        !use iterator_mod, only: vrj, dj, vgrid
         use lock_module, only: lock, linf
         implicit none
         integer, intent(in) :: ispectr
@@ -151,10 +150,9 @@ contains
         use constants, only : zero
         use rt_parameters, only : nr, ni1, ni2
         use plasma, only: vt0, fvt, cltn
-        use current, only: vzmin, vzmax
+        use nr_grid, only: vzmin, vzmax
         use maxwell, only: i0, vij, dfij
         use lock_module        
-        !use iterator_mod
         implicit none
         integer, intent(in) :: ispectr, iterat
         
@@ -210,14 +208,14 @@ contains
         deallocate(vvj,vdfj)
     end subroutine    
 
-    subroutine find_velocity_limits_and_initial_dfdv(anb, source)
+    subroutine find_velocity_limits_and_initial_dfdv(anb)
         use constants, only: c0, c1, zero, zalfa, xmalfa, xlog, one_third
         use rt_parameters, only: nr, inew, ni1, ni2, itend0, kv, factor
         use plasma !, only: fn1, fn2, fvt, vt0
-        use current, only: dens, eta, fcoll
+        use nr_grid, only: dens, eta, fcoll
+        use nr_grid, only: source !! нужна ли она тут вообще???
         implicit none
         real(wp), intent(inout) :: anb
-        real(wp), intent(inout) :: source(:)
         integer  :: i, j, k
         real(wp) :: v, vt, vto, wpq, whe
         real(wp) :: u, u1, e1, e2, e3, tmp
@@ -306,4 +304,4 @@ contains
 
 
     end subroutine
-end module iterator_mod
+end module small_vgrid

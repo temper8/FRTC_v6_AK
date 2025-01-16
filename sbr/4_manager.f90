@@ -11,7 +11,7 @@ contains
         use rt_parameters, only : nr, ipri, iw, nmaxm, pabs0, eps, eps_const            
         use trajectory_module
         use spectrum_mod
-        use iterator_mod,only: plost, pnab
+        use power, only: plost, pnab
         use dispersion_module, only: icall1, icall2, yn3, ivar, izn, znakstart
         use driver_module, only: irs, iabsorp
         use trajectory_data
@@ -168,7 +168,7 @@ contains
     subroutine rini(traj, point, iw0)
         !! вычисление начальной точки входа луча
         use constants, only : zero
-        use rt_parameters, only : inew, nr, iw
+        use rt_parameters, only : inew, nr, iw, spectrum_coordinate_system
         use spectrum_mod, only : SpectrumPoint
         use decrements, only : dhdnr 
         use dispersion_module, only: ivar, yn3, izn, znakstart
@@ -208,8 +208,17 @@ contains
             ! вычисление g22 и g33
             call calculate_metrics(pa, tet)
 
-            yn3 = point%Ntor*dsqrt(g33)/co 
-            xm = point%Npol*dsqrt(g22)/si
+            select case(spectrum_coordinate_system)
+            case(0) ! toroidal coordinates
+                yn3 = point%Ntor*dsqrt(g33)
+                xm  = point%Npol*dsqrt(g22)
+            case(1) ! magnetic coordinates
+                yn3 = point%Ntor*dsqrt(g33)/co 
+                xm  = point%Npol*dsqrt(g22)/si
+            case DEFAULT
+                print *, 'bad spectrum coordinate system'
+                stop
+            end select  
 
             num_roots = find_all_roots(pa,xm,tet,xnr_root)
              
@@ -245,14 +254,12 @@ contains
         !! вычисление поглощенной мощности вдоль траектории
         use constants, only: clt, zero
         use rt_parameters, only: itend0, kv
-        use iterator_mod, only: vlf, vrt, dflf, dfrt
-        use iterator_mod, only: distr
+        use small_vgrid, only: vlf, vrt, dflf, dfrt
+        use small_vgrid, only: distr
         use decrements, only: pdec1, pdec2, pdec3, pdecv
         use decrements, only: zatukh
-        use current, only: dfind
+        use power,  only: psum4, dfind
         use plasma, only: vperp
-        use iterator_mod, only: psum4
-        !use driver_module, only: pow
         use trajectory_data
         implicit none
 

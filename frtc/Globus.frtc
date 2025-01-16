@@ -1,15 +1,15 @@
 {
-  "name": "FT2_01mm",
-  "comment": "FT2 test",
+  "name": "Globus-M",
+  "comment": "T51_R4",
   "physical_parameters": {
-    "freq": 0.92,
-    "xmi1": 1.0,
+    "freq": 2.45,
+    "xmi1": 2.0,
     "zi1": 1.0,
-    "xmi2": 16.0,
-    "zi2": 8.0,
-    "dni2": 0.0,
-    "xmi3": 12.0,
-    "zi3": 6.0,
+    "xmi2": 1.0,
+    "zi2": 0.0,
+    "dni2": 0.25,
+    "xmi3": 1.0,
+    "zi3": 1.0,
     "dni3": 1.0
   },
   "alphas_parameters": {
@@ -54,12 +54,12 @@
     "upl_fix": false,
     "upl_value": 0.0,
     "fp_solver": 0,
-    "traj_len": 0
+    "traj_len_seved": -1
   },
   "grill_parameters": {
-    "Zplus": 5.0,
-    "Zminus": -5.0,
-    "ntet": 15,
-    "nnz": 51
+    "Zplus": 20.0,
+    "Zminus": -20.0,
+    "ntet": 5,
+    "nnz": 100
   }
 }

@@ -1,8 +1,12 @@
 # FRTC code Workspace v6 for [Astra-Box](https://github.com/temper8/Astra-Box)
 
-[Documentation](https://temper8.github.io/FRTC_DOC/)
+[Documentation](https://popovlab.github.io/FRTC_DOC/)
 
 v6 новая структура папок c разделением спектров и настроек frts
+- починил парамерт ismthout - теперь можно отключить сгляживание 
+- иннициализирую нулем массывы для мощности. иначе была ошибка, когда есть только одна ветка
+- пофиксил краш адаптивной сетки из-за сверсветовых волн
+- обмен параметрами с кодом FRTC с помощью файла parameters.nml
 - frtc - для хранения файлов с параметрами frtc
 - spectrum - для спектров
 - spectrum_data собственно для данных спектра
